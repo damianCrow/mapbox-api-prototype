@@ -1,0 +1,19 @@
+{
+  "name": "ResourcesApp",
+  "version": "1.0.0",
+  "main": "Gruntfile.js",
+  "author": "damian crow",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-sass": "^1.2.1",
+    "grunt-contrib-jshint": "~1.1.0",
+    "grunt-es6-transpiler": "~1.0.2"
+  },
+  "dependencies": {
+  }
+}

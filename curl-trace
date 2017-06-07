@@ -1,0 +1,74 @@
+== Info:   Trying 104.244.42.194...
+== Info: TCP_NODELAY set
+== Info: Connected to api.twitter.com (104.244.42.194) port 443 (#0)
+== Info: TLS 1.2 connection using TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+== Info: Server certificate: api.twitter.com
+== Info: Server certificate: DigiCert SHA2 High Assurance Server CA
+== Info: Server certificate: DigiCert High Assurance EV Root CA
+=> Send header, 215 bytes (0xd7)
+0000: POST /oauth2/token HTTP/1.1
+001d: Host: api.twitter.com
+0034: Accept: */*
+0041: Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+0080: User-Agent: YNR Twitter ID mapper v0.0.1
+00aa: Authorization: Basic 
+00c1: Content-Length: 29
+00d5: 
+=> Send data, 29 bytes (0x1d)
+0000: grant_type=client_credentials
+== Info: upload completely sent off: 29 out of 29 bytes
+<= Recv header, 24 bytes (0x18)
+0000: HTTP/1.1 403 Forbidden
+<= Recv header, 79 bytes (0x4f)
+0000: cache-control: no-cache, no-store, must-revalidate, pre-check=0,
+0040:  post-check=0
+<= Recv header, 53 bytes (0x35)
+0000: content-disposition: attachment; filename=json.json
+<= Recv header, 21 bytes (0x15)
+0000: content-length: 105
+<= Recv header, 46 bytes (0x2e)
+0000: content-type: application/json;charset=utf-8
+<= Recv header, 37 bytes (0x25)
+0000: date: Wed, 31 May 2017 09:37:24 GMT
+<= Recv header, 40 bytes (0x28)
+0000: expires: Tue, 31 Mar 1981 05:00:00 GMT
+<= Recv header, 46 bytes (0x2e)
+0000: last-modified: Wed, 31 May 2017 09:37:24 GMT
+<= Recv header, 7 bytes (0x7)
+0000: ml: A
+<= Recv header, 18 bytes (0x12)
+0000: pragma: no-cache
+<= Recv header, 15 bytes (0xf)
+0000: server: tsa_f
+<= Recv header, 114 bytes (0x72)
+0000: set-cookie: guest_id=v1%3A149622344478126718; Domain=.twitter.co
+0040: m; Path=/; Expires=Fri, 31-May-2019 09:37:24 UTC
+<= Recv header, 23 bytes (0x17)
+0000: status: 403 Forbidden
+<= Recv header, 46 bytes (0x2e)
+0000: strict-transport-security: max-age=631138519
+<= Recv header, 53 bytes (0x35)
+0000: x-connection-hash: cc4fbfc1d2925f446bd4b36b4f94790a
+<= Recv header, 33 bytes (0x21)
+0000: x-content-type-options: nosniff
+<= Recv header, 23 bytes (0x17)
+0000: x-frame-options: DENY
+<= Recv header, 22 bytes (0x16)
+0000: x-response-time: 109
+<= Recv header, 33 bytes (0x21)
+0000: x-transaction: 00f9514d003b4735
+<= Recv header, 28 bytes (0x1c)
+0000: x-tsa-request-body-time: 0
+<= Recv header, 43 bytes (0x2b)
+0000: x-twitter-response-tags: BouncerCompliant
+<= Recv header, 35 bytes (0x23)
+0000: x-ua-compatible: IE=edge,chrome=1
+<= Recv header, 33 bytes (0x21)
+0000: x-xss-protection: 1; mode=block
+<= Recv header, 2 bytes (0x2)
+0000: 
+<= Recv data, 105 bytes (0x69)
+0000: {"errors":[{"code":99,"message":"Unable to verify your credentia
+0040: ls","label":"authenticity_token_error"}]}
+== Info: Curl_http_done: called premature == 0
+== Info: Connection #0 to host api.twitter.com left intact

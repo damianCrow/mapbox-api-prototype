@@ -1,0 +1,36 @@
+/vendor/
+/logs/*
+!/logs/README.md
+
+# -----------------------------
+# Sass
+# -----------------------------
+.sass-cache/
+*.scssc
+
+
+# -----------------------------
+# OS generated files
+# -----------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+# -----------------------------
+# General
+# -----------------------------
+*.sublime-*
+node_modules/
+vendor/
+
+# -----------------------------
+# Project-specific
+# -----------------------------
+styles.css
+styles.min.css.map
+composer.lock
