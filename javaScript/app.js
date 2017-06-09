@@ -157,11 +157,11 @@ var pointAnimate = (latLong) => {
         // Request the next frame of animation so long as destination has not
         // been reached.
         if (point1.features[0].geometry.coordinates[0] !== destination[0]) {
-            requestAnimationFrame(animate);
+          requestAnimationFrame(animate);
         }
         else {
 
-        	map.flyTo({center: route1.features[0].geometry.coordinates[speed], zoom: 15, curve: 2});
+        	map.flyTo({center: route1.features[0].geometry.coordinates[speed], zoom: 15, curve: 2, speed: 2});
         }
 
         counter = counter + 1;

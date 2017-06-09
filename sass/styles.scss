@@ -15,12 +15,45 @@
 }
 
 ul {
-	position: absolute;
-  top: 0;
-  right: 10px;
+  padding: 8px 0 0 0;
   list-style: none;
+  margin-bottom: 5px;
 
   li {
   	cursor: pointer;
+  	font-family: 'Open Sans Bold', sans-serif;
+  	color: #ffffff;
   }
+}
+
+.label {
+	font-family: Arial Black, Charcoal, sans-serif;
+	color: #7aa7ef;
+	text-shadow: 2px 2px #096084;
+}
+
+.button {
+	text-align: center;
+  color: #fff;
+  display: block;
+  margin: 0px;
+  padding: 5px 10px;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: 'Open Sans Bold', sans-serif;
+  line-height: 20px;
+  font-size: 12px;
+  -webkit-appearance: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+nav {
+	position: absolute;
+	width: 55px;
+	right: 50px;
+	z-index: 1;
 }

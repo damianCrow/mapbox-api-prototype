@@ -20,13 +20,17 @@
 
 			<div id="wrapper">
 				
-				<div class="map" id="map"></div>
-				<!-- <p id="info"></p>
-				<ul>
-					<li class="berlin" onclick="moveToLocation(this)" id="13.400841090074266, 52.516494872956116">Berlin</li>
-					<li class="newYork" onclick="moveToLocation(this)" id="-73.98562338336815, 40.73037341203556">New York</li>
-					<li class="london" onclick="moveToLocation(this)" id="-0.088670, 51.513259">London</li>
-				</ul> -->
+				<div class="map" id="map">
+					<nav>
+						<!-- <p id="info"></p> -->
+						<ul>
+							<!-- <li class="berlin" onclick="moveToLocation(this)" id="13.400841090074266, 52.516494872956116">Berlin</li>
+							<li class="newYork" onclick="moveToLocation(this)" id="-73.98562338336815, 40.73037341203556">New York</li>
+							<li class="london" onclick="moveToLocation(this)" id="-0.088670, 51.513259">London</li> -->
+						</ul>
+						<button id="animateControl" class="button" style="background-color: #e55e5e;">Stop</button>
+					</nav>
+				</div>
 			</div>
 			<script>
 				mapboxgl.accessToken = 'pk.eyJ1IjoibXJhd2Vzb21lIiwiYSI6ImNqMzJzeDN4ZjAwMHAyd250YmRyZm04MDcifQ.YcsqDP3hqulR3f523AoB1g';
@@ -36,7 +40,22 @@
 
 				var start = [-74.009476, 40.682402],
 				end = [-73.98562338336815, 40.73037341203556],
-				isAtStart = true;
+				markersArray = [], timeoutsArray = [], locationsArray = [],
+				isAtStart = true, animateStop = false,
+
+				centralPark11thStreetCathedralEnd = {center: [-73.9530315245757, 40.79865136720241], duration:5000, zoom:15, bearing: -150, text: 'Central Park, 11th Street Cathedral End', id: 'cp_cathedral'},
+				centralParkColumbusCircleEnd = {center: [-73.97810521248985, 40.76665163936005], duration:8000, bearing:65, pitch:100, zoom:15.5, text: 'Central Park, Columbus Circle End', id: 'cp_columbus'},
+				trumpTower = {center: [-73.97447413016186, 40.76323412185767], pitch: 25, bearing: -57, duration:6000, zoom:17, text: 'Trump Tower, Yes, He Has His Own Tower!', id:'trump_tower'},
+				empireStateBuilding = {center: [-73.98629725365409, 40.75019114475904], bearing:15, duration:6000, pitch:45,  zoom:16, text: 'The Empire State Building', id:'empire'},
+				statueOfLiberty = {center: [-74.04408808271121, 40.689995838927985], bearing:130, duration:8000, pitch:80, zoom:17, text: 'The Statue Of Liberty', id:'liberty'},
+				raceTrack = {center: [-74.0121746510601, 40.68185787975443], pitch: 45, bearing: -17.6, duration:8000, zoom:16, text: 'Welcome To The Race Track, Its Race Day', id:'race_track'};
+
+				locationsArray.push(centralPark11thStreetCathedralEnd, centralParkColumbusCircleEnd, trumpTower, empireStateBuilding, statueOfLiberty, raceTrack);
+
+				var bounds = [
+				    [-74.08633022449791, 40.67099989314178], // Southwest coordinates
+				    [-73.7202743886315, 40.893309881421345]  // Northeast coordinates
+				];
 
 				var line = [
 					[-0.08676914764919275, 51.51094850887958],
@@ -84,25 +103,36 @@
 
 				var map = new mapboxgl.Map({
 					container: 'map',
-					 center: [-74.0121746510601, 40.68185787975443],
-				    zoom: 15.5,
-				    pitch: 45,
-				    bearing: -17.6,
-					// center: start,
-					// zoom: 14,
-					// pitch: 60,
-    	// 		bearing: 15, 
+					center: centralPark11thStreetCathedralEnd.center,
+					zoom: 11,
+					maxBounds: bounds,
+					pitch: 60,
+    			bearing: 15, 
 					style: 'mapbox://styles/mrawesome/cj3lgw3ay000n2rpbc40jv6fj'/*'mapbox://styles/mapbox/outdoors-v9'*/
 				}).addControl(new mapboxgl.NavigationControl());
 
-				map.on('mousemove', function (e) {
-    document.getElementById('info').innerHTML =
-        // e.point is the x, y coordinates of the mousemove event relative
-        // to the top-left corner of the map
-        
-            // e.lngLat is the longitude, latitude geographical position of the event
-        JSON.stringify(e.lngLat);
-});
+				// map.on('mousemove', function (e) {
+			 //    document.getElementById('info').innerHTML =
+			 //    JSON.stringify(e.lngLat);
+				// });
+
+				function createLabel(locationObj) {
+						   
+			    var el = document.createElement('h4');
+			    el.className = 'label';
+			    el.id = locationObj.id;
+			    el.innerHTML = locationObj.text;
+
+			   	var marker = new mapboxgl.Marker(el);
+			   	markersArray.push(marker);
+			    marker.setLngLat(locationObj.center).addTo(map);
+				}
+
+				function goTo(locationObj) {
+
+					map.easeTo(locationObj);
+					createLabel(locationObj);
+				}
 
 				map.on('load', function() {
 			    map.addLayer({
@@ -125,15 +155,6 @@
 			            'fill-extrusion-opacity': 0.75
 			        }
 			    });
-
-			     // map.flyTo({
-		      //   center: target,
-		      //   zoom: 16,
-		      //   pitch: 75,
-		      //   bearing: 80,
-		      //   speed: 1, 
-		      //   curve: 1
-		      // });
 
 		    	map.addLayer({
 			        "id": "route",
@@ -159,35 +180,186 @@
 			        }
 			    });
 
-			    var geojson = {
-				    "type": "FeatureCollection",
-				    "features": [
-				        {
-				            "type": "Feature",
-				            "properties": {
-				                "message": "Starting point.",
-				                "iconSize": [40, 40],
-				                "url": 'url("http://icons.iconarchive.com/icons/icons-land/vista-map-markers/128/Map-Marker-Marker-Outside-Chartreuse-icon.png")'
-				            },
-				            "geometry": {
-				                "type": "Point",
-				                "coordinates": line[0]
-				            }
-				        },
-				        {
-				            "type": "Feature",
-				            "properties": {
-				                "message": "End Point.",
-				                "iconSize": [50, 50],
-				                "url": 'url("http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png")'
-				            },
-				            "geometry": {
-				                "type": "Point",
-				                "coordinates": line[4]
-				            }
-				        }
-				    ]
-				  };
+			    function rotator() {
+
+			    	if(animateStop === true) {
+
+			    		return null;
+			    	}
+
+			    	var totalTimeout = 1000;
+
+			    	var timeout1 = window.setTimeout(function() {
+
+						  goTo(centralPark11thStreetCathedralEnd);
+						}, totalTimeout);
+
+			    	totalTimeout += centralPark11thStreetCathedralEnd.duration + 1000;
+
+						var timeout2 = window.setTimeout(function() {
+
+						  	pinSetup(centralPark11thStreetCathedralEnd);
+						   	goTo(centralParkColumbusCircleEnd);
+						}, totalTimeout);
+
+						totalTimeout += centralParkColumbusCircleEnd.duration + 500;
+
+						var timeout3 = window.setTimeout(function() {
+
+				    	pinSetup(centralParkColumbusCircleEnd);
+				      goTo(trumpTower);
+				    }, totalTimeout);
+
+				    totalTimeout += trumpTower.duration + 1000;
+
+					  var timeout4 = window.setTimeout(function() {
+
+			      	pinSetup(trumpTower);
+				      goTo(empireStateBuilding);
+						}, totalTimeout);
+
+						totalTimeout += empireStateBuilding.duration + 1000;
+
+						var timeout5 = window.setTimeout(function() {
+			
+			      	pinSetup(empireStateBuilding);
+				      goTo(statueOfLiberty);
+						}, totalTimeout);
+
+						totalTimeout += statueOfLiberty.duration + 500;
+
+						var timeout6 = window.setTimeout(function() {
+
+			      	pinSetup(statueOfLiberty);
+				      goTo(raceTrack);
+				    }, totalTimeout);
+
+						totalTimeout += raceTrack.duration + 2000;
+
+  					var timeout7 = window.setTimeout(function() {
+
+							pinSetup(raceTrack);
+	  					map.flyTo({center: [-74.0077331198848, 40.72457651621153], zoom: 12.5, duration: 3000, pitch: 60, bearing: 15}); // ZOOM OUT AND CENTER MAP AFTER ANIMATION. \\
+	  				}, totalTimeout);
+
+	  				totalTimeout += 10000;
+	  					
+  					rotatorReset(totalTimeout, rotator); // RESTART ANIMATION AFTER 10 SECONDS. \\
+
+	  				timeoutsArray.push(timeout7, timeout6, timeout5, timeout4, timeout3, timeout2, timeout1);
+					}
+
+					var rotatorResetTimeout;
+					function rotatorReset(timeOut, callBack) {
+
+						rotatorResetTimeout = window.setTimeout(function() {
+
+							markersArray.forEach(function(marker) {
+								marker.remove();
+							});
+
+							if(callBack) {
+
+								callBack();
+							}
+	  				}, timeOut);
+					}
+
+					rotator();
+
+					function pinSetup(locationObj) {
+
+						$('#'+locationObj.id).html('')
+
+							.css({'background-image':'url("http://icons.iconarchive.com/icons/icons-land/vista-map-markers/128/Map-Marker-Marker-Outside-Chartreuse-icon.png")', 'height': '30px', 'width': '30px', 'background-size': '100%'})
+
+							.click(function() {
+
+								timeoutsArray.forEach(function(timOut) {
+									
+	  							window.clearTimeout(timOut);
+	  						});
+
+								window.clearTimeout(rotatorResetTimeout);
+	  						this.remove();
+
+	  						if(animateStop === false) {
+
+	  							goTo(locationObj);
+	  							window.setTimeout(function() {
+
+				  					pinSetup(locationObj);
+				  					map.flyTo({center: [-74.0077331198848, 40.72457651621153], zoom: 12.5, duration: 3000, pitch: 60, bearing: 15});
+
+				  					rotatorReset(10000, rotator);
+
+				  				}, locationObj.duration + 3000);
+	  						}
+	  					});
+					}
+
+					$('#animateControl').click(function() {
+						
+						if(this.innerHTML === 'Play') {
+
+							animateStop = false;
+							this.innerHTML = 'Stop';
+							this.style.backgroundColor = '#e55e5e';
+							rotatorReset(0, function() {
+
+								timeoutsArray.forEach(function(timOut) {
+									
+	  							window.clearTimeout(timOut);
+	  						});
+
+	  						window.clearTimeout(rotatorResetTimeout);
+								rotator();
+							});
+						}
+						else {
+
+							animateStop = true;
+							map.stop();
+							timeoutsArray.forEach(function(timOut) {
+									
+	  							window.clearTimeout(timOut);
+	  					});
+	  					window.clearTimeout(rotatorResetTimeout);
+
+							this.innerHTML = 'Play';
+							this.style.backgroundColor = '#56b881';
+						}
+					});
+
+			   //  var geojson = {
+				  //   "type": "FeatureCollection",
+				  //   "features": [
+				  //       {
+				  //           "type": "Feature",
+				  //           "properties": {
+				  //               "message": "Starting point.",
+				  //               "iconSize": [40, 40],
+				  //               "url": 'url("http://icons.iconarchive.com/icons/icons-land/vista-map-markers/128/Map-Marker-Marker-Outside-Chartreuse-icon.png")'
+				  //           },
+				  //           "geometry": {
+				  //               "type": "Point",
+				  //               "coordinates": line[0]
+				  //           }
+				  //       },
+				  //       {
+				  //           "type": "Feature",
+				  //           "properties": {
+				  //               "message": "End Point.",
+				  //               "iconSize": [50, 50],
+				  //               "url": 'url("http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png")'
+				  //           },
+				  //           "geometry": {
+				  //               "type": "Point",
+				  //               "coordinates": line[4]
+				  //           }
+				  //       }
+				  //   ]
+				  // };
 
 				  // function animate() {
 			   //      // Update point geometry to a new position based on counter denoting
@@ -206,47 +378,47 @@
 			   //      counter = counter + 1;
 			   //  }
 
-			   geojson.features.forEach(createMarkers);
+			   // geojson.features.forEach(createMarkers);
 
 		     var counter = 0;
 
-			    map.addSource('point', {
-			        "type": "geojson",
-			        "data": point
-			    });
+			    // map.addSource('point', {
+			    //     "type": "geojson",
+			    //     "data": point
+			    // });
 
-			    map.addLayer({
-			        "id": "point",
-			        "source": "point",
-			        "type": "circle",
-			        "paint": {
-			            "circle-radius": 10,
-			            "circle-color": "#007cbf"
-			        }
-			    });
+			    // map.addLayer({
+			    //     "id": "point",
+			    //     "source": "point",
+			    //     "type": "circle",
+			    //     "paint": {
+			    //         "circle-radius": 10,
+			    //         "circle-color": "#007cbf"
+			    //     }
+			    // });
 			});
 
-				var route = {
-				    "type": "FeatureCollection",
-				    "features": [{
-				        "type": "Feature",
-				        "geometry": {
-				            "type": "LineString",
-				            "coordinates": line
-				        }
-				    }]
-				};
+				// var route = {
+				//     "type": "FeatureCollection",
+				//     "features": [{
+				//         "type": "Feature",
+				//         "geometry": {
+				//             "type": "LineString",
+				//             "coordinates": line
+				//         }
+				//     }]
+				// };
 
-				var point = {
-				    "type": "FeatureCollection",
-				    "features": [{
-				        "type": "Feature",
-				        "geometry": {
-				            "type": "Point",
-				            "coordinates": line[0]
-				        }
-				    }]
-				};
+				// var point = {
+				//     "type": "FeatureCollection",
+				//     "features": [{
+				//         "type": "Feature",
+				//         "geometry": {
+				//             "type": "Point",
+				//             "coordinates": line[0]
+				//         }
+				//     }]
+				// };
 
 				// var lineDistance = turf.lineDistance(route.features[0], 'kilometers');
 
@@ -278,10 +450,10 @@
 						        .setPopup(popup);
 						}
 
-					    setTimeout(function() {
-					    	console.log('started');
-					    	// animate(counter);
-					    }, 20000)
+					    // setTimeout(function() {
+					    // 	console.log('started');
+					    // 	animate(counter);
+					    // }, 20000)
 
 		    // }, 4000)
 
