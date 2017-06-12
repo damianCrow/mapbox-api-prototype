@@ -22,7 +22,6 @@
 				
 				<div class="map" id="map">
 					<nav>
-						<!-- <p id="info"></p> -->
 						<ul>
 							<!-- <li class="berlin" onclick="moveToLocation(this)" id="13.400841090074266, 52.516494872956116">Berlin</li>
 							<li class="newYork" onclick="moveToLocation(this)" id="-73.98562338336815, 40.73037341203556">New York</li>
@@ -31,6 +30,7 @@
 						<button id="animateControl" class="button" style="background-color: #e55e5e;">Stop</button>
 					</nav>
 				</div>
+				<p id="info"></p>
 			</div>
 			<script>
 				mapboxgl.accessToken = 'pk.eyJ1IjoibXJhd2Vzb21lIiwiYSI6ImNqMzJzeDN4ZjAwMHAyd250YmRyZm04MDcifQ.YcsqDP3hqulR3f523AoB1g';
@@ -45,7 +45,7 @@
 
 				centralPark11thStreetCathedralEnd = {center: [-73.9530315245757, 40.79865136720241], duration:5000, zoom:15, bearing: -150, text: 'Central Park, 11th Street Cathedral End', id: 'cp_cathedral'},
 				centralParkColumbusCircleEnd = {center: [-73.97810521248985, 40.76665163936005], duration:8000, bearing:65, pitch:100, zoom:15.5, text: 'Central Park, Columbus Circle End', id: 'cp_columbus'},
-				trumpTower = {center: [-73.97447413016186, 40.76323412185767], pitch: 25, bearing: -57, duration:6000, zoom:17, text: 'Trump Tower, Yes, He Has His Own Tower!', id:'trump_tower'},
+				trumpTower = {center: [-73.97447413016186, 40.76323412185767], pitch: 25, bearing: -57, duration:6000, zoom:17, text: 'Trump Tower, Yes, He Has His Own Tower!', id:'trump_tower', boundries: [[-73.97386832165292, 40.762795049517166], [-73.97316570353738, 40.76248143866823], [-73.97353077998658, 40.76199663367237], [-73.97423647668262, 40.762303489374546], [-73.97386832165292, 40.762795049517166]]},
 				empireStateBuilding = {center: [-73.98629725365409, 40.75019114475904], bearing:15, duration:6000, pitch:45,  zoom:16, text: 'The Empire State Building', id:'empire'},
 				statueOfLiberty = {center: [-74.04408808271121, 40.689995838927985], bearing:130, duration:8000, pitch:80, zoom:17, text: 'The Statue Of Liberty', id:'liberty'},
 				raceTrack = {center: [-74.0121746510601, 40.68185787975443], pitch: 45, bearing: -17.6, duration:8000, zoom:16, text: 'Welcome To The Race Track, Its Race Day', id:'race_track'};
@@ -180,6 +180,43 @@
 			        }
 			    });
 
+			    map.addLayer({
+		        'id': 'trumpBuilding',
+		        'source': 'composite',
+			      'source-layer': 'building',
+			      'filter': ["all",['==', 'height', 202]],
+		        'type': 'fill-extrusion',
+		        // 'source': {
+		        //     'type': 'geojson',
+		        //     'data': {
+		        //         'type': 'Feature',
+		        //         'geometry': {
+		        //             'type': 'Polygon',
+		        //             'coordinates': [trumpTower.boundries]
+		        //         }
+		        //     }
+		        // },
+		        'paint': {
+		        	'fill-extrusion-color': '#FFD700',
+	            'fill-extrusion-height':  {
+                'type': 'identity',
+                'property': 'height'
+		          },
+		          'fill-extrusion-opacity': 1
+		        }
+		    	});
+					map.addLayer({
+		        'id': 'empireStateB',
+		        'source': 'composite',
+			      'source-layer': 'building',
+			      'filter': ["all",['==', 'height', 390]],
+		        'type': 'fill-extrusion',
+		        'paint': {
+		        	'fill-extrusion-color': '#0348b7',
+	            'fill-extrusion-height': 440,
+		          'fill-extrusion-opacity': 1
+		        }
+		    	});
 			    function rotator() {
 
 			    	if(animateStop === true) {
