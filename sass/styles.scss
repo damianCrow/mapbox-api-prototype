@@ -1,3 +1,43 @@
+$localFontsPath: '../sass/fonts/';
+
+@font-face {
+  $font-name: 'BlueSkyStandard-Regular';
+  font-family: 'BlueSkyStandard';
+  src: url( $localFontsPath + $font-name + '.eot');
+  src:
+      url( $localFontsPath + $font-name + '.woff') format('woff'),
+      url( $localFontsPath + $font-name + '.svg#' + $font-name) format('svg'),
+      url( $localFontsPath + $font-name + '.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  $font-name: 'BlueSkyStandard-Bold';
+  font-family: 'BlueSkyStandard';
+  src: url( $localFontsPath + $font-name + '.eot');
+  src:
+      // url( $localFontsPath + $font-name + '.woff2') format('woff2'),
+      url( $localFontsPath + $font-name + '.woff') format('woff'),
+      url( $localFontsPath + $font-name + '.svg#' + $font-name) format('svg'),
+      url( $localFontsPath + $font-name + '.eot?#iefix') format('embedded-opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  $font-name: 'BlueSkyStandard-Light';
+  font-family: 'BlueSkyStandard';
+  src: url( $localFontsPath + $font-name + '.eot');
+  src:
+      // url( $localFontsPath + $font-name + '.woff2') format('woff2'),
+      url( $localFontsPath + $font-name + '.woff') format('woff'),
+      url( $localFontsPath + $font-name + '.svg#' + $font-name) format('svg'),
+      url( $localFontsPath + $font-name + '.eot?#iefix') format('embedded-opentype');
+  font-weight: lighter;
+  font-style: normal;
+}
+
 .map {
 	width: 1200px;
 	height: 800px;
@@ -27,18 +67,16 @@ ul {
 }
 
 .label {
-	font-family: Arial Black, Charcoal, sans-serif;
-	color: #7aa7ef;
-	text-shadow: 2px 2px #096084;
+	font-family: 'BlueSkyStandard', 'BlueSkyStandard-Bold', sans-serif;
+	color: #13D4C8;
+	text-shadow: 1px 1px #096084;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .button {
-	text-align: center;
-  color: #fff;
   display: block;
   margin: 0px;
-  padding: 5px 10px;
-  position: relative;
   border: none;
   cursor: pointer;
   border-radius: 3px;
@@ -53,7 +91,27 @@ ul {
 
 nav {
 	position: absolute;
-	width: 55px;
+	width: 4px;
 	right: 50px;
 	z-index: 1;
+  top: 88px;
+}
+
+#animateControl {
+  background-color: #e55e5e; 
+  width: 30px; 
+  height: 30px; 
+  right: -40px; 
+  position: absolute;
+  background-image: url(../playButtonSprite.png);
+  background-size: 250%;
+  background-repeat: no-repeat;
+  background-position: -14% -15%;
+  &:focus, &:active {
+    outline: 0;
+    border: none;
+  }
+  &.stopped {
+    background-position: 114% -15%;
+  }
 }

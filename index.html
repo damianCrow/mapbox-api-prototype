@@ -27,7 +27,7 @@
 							<li class="newYork" onclick="moveToLocation(this)" id="-73.98562338336815, 40.73037341203556">New York</li>
 							<li class="london" onclick="moveToLocation(this)" id="-0.088670, 51.513259">London</li> -->
 						</ul>
-						<button id="animateControl" class="button" style="background-color: #e55e5e;">Stop</button>
+						<button id="animateControl" class="button" value="Stop"></button>
 					</nav>
 				</div>
 				<p id="info"></p>
@@ -48,7 +48,8 @@
 				trumpTower = {center: [-73.97447413016186, 40.76323412185767], pitch: 25, bearing: -57, duration:6000, zoom:17, text: 'Trump Tower, Yes, He Has His Own Tower!', id:'trump_tower', boundries: [[-73.97386832165292, 40.762795049517166], [-73.97316570353738, 40.76248143866823], [-73.97353077998658, 40.76199663367237], [-73.97423647668262, 40.762303489374546], [-73.97386832165292, 40.762795049517166]]},
 				empireStateBuilding = {center: [-73.98629725365409, 40.75019114475904], bearing:15, duration:6000, pitch:45,  zoom:16, text: 'The Empire State Building', id:'empire'},
 				statueOfLiberty = {center: [-74.04408808271121, 40.689995838927985], bearing:130, duration:8000, pitch:80, zoom:17, text: 'The Statue Of Liberty', id:'liberty'},
-				raceTrack = {center: [-74.0121746510601, 40.68185787975443], pitch: 45, bearing: -17.6, duration:8000, zoom:16, text: 'Welcome To The Race Track, Its Race Day', id:'race_track'};
+				raceTrack = {center: [-74.0121746510601, 40.68185787975443], pitch: 45, bearing: -17.6, duration:8000, zoom:16, text: 'Finally, The Track, Its Race Day', id:'race_track'},
+				buildingCover = [[-73.98298924526172, 40.757523684874144], [-73.98257129198404, 40.75730063091109], [-73.98279427026381, 40.75706271234105], [-73.9830146849198, 40.756979858365554], [-73.9831166057514, 40.75739603524059]];
 
 				locationsArray.push(centralPark11thStreetCathedralEnd, centralParkColumbusCircleEnd, trumpTower, empireStateBuilding, statueOfLiberty, raceTrack);
 
@@ -186,16 +187,6 @@
 			      'source-layer': 'building',
 			      'filter': ["all",['==', 'height', 202]],
 		        'type': 'fill-extrusion',
-		        // 'source': {
-		        //     'type': 'geojson',
-		        //     'data': {
-		        //         'type': 'Feature',
-		        //         'geometry': {
-		        //             'type': 'Polygon',
-		        //             'coordinates': [trumpTower.boundries]
-		        //         }
-		        //     }
-		        // },
 		        'paint': {
 		        	'fill-extrusion-color': '#FFD700',
 	            'fill-extrusion-height':  {
@@ -205,18 +196,40 @@
 		          'fill-extrusion-opacity': 1
 		        }
 		    	});
-					map.addLayer({
-		        'id': 'empireStateB',
-		        'source': 'composite',
-			      'source-layer': 'building',
-			      'filter': ["all",['==', 'height', 390]],
+
+		    	map.addLayer({
+		        'id': 'buildingCover',
 		        'type': 'fill-extrusion',
+		        'source': {
+		            'type': 'geojson',
+		            'data': {
+		                'type': 'Feature',
+		                'geometry': {
+		                    'type': 'Polygon',
+		                    'coordinates': [buildingCover]
+		                }
+		            }
+		        },
 		        'paint': {
-		        	'fill-extrusion-color': '#0348b7',
-	            'fill-extrusion-height': 440,
-		          'fill-extrusion-opacity': 1
+		        	'fill-extrusion-color': '#002a3d',
+	            'fill-extrusion-height': 202,
+		          'fill-extrusion-opacity': 1,
+		          'fill-extrusion-base': 0
 		        }
 		    	});
+
+					// map.addLayer({
+		   //      'id': 'empireStateB',
+		   //      'source': 'composite',
+			  //     'source-layer': 'building',
+			  //     'filter': ["all",['==', 'height', 390]],
+		   //      'type': 'fill-extrusion',
+		   //      'paint': {
+		   //      	'fill-extrusion-color': '#BF0A30',
+	    //         'fill-extrusion-height': 440,
+		   //        'fill-extrusion-opacity': 0.4
+		   //      }
+		   //  	});
 			    function rotator() {
 
 			    	if(animateStop === true) {
@@ -308,7 +321,7 @@
 
 						$('#'+locationObj.id).html('')
 
-							.css({'background-image':'url("http://icons.iconarchive.com/icons/icons-land/vista-map-markers/128/Map-Marker-Marker-Outside-Chartreuse-icon.png")', 'height': '30px', 'width': '30px', 'background-size': '100%'})
+							.css({'background-image':'url("NIO_MAP_PIN_2.svg")', 'height': '27px', 'width': '20px', 'background-size': '100%'})
 
 							.click(function() {
 
@@ -337,11 +350,13 @@
 
 					$('#animateControl').click(function() {
 						
-						if(this.innerHTML === 'Play') {
+						if(this.value === 'Play') {
 
 							animateStop = false;
-							this.innerHTML = 'Stop';
+							this.value = 'Stop';
 							this.style.backgroundColor = '#e55e5e';
+							$(this).removeClass('stopped');
+
 							rotatorReset(0, function() {
 
 								timeoutsArray.forEach(function(timOut) {
@@ -363,8 +378,9 @@
 	  					});
 	  					window.clearTimeout(rotatorResetTimeout);
 
-							this.innerHTML = 'Play';
+							this.value = 'Play';
 							this.style.backgroundColor = '#56b881';
+							$(this).addClass('stopped');
 						}
 					});
 
