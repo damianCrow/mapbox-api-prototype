@@ -299,7 +299,7 @@
 	  				timeoutsArray.push(timeout7, timeout6, timeout5, timeout4, timeout3, timeout2, timeout1);
 					}
 
-					var rotatorResetTimeout;
+					var rotatorResetTimeout, timeout8;
 					function rotatorReset(timeOut, callBack) {
 
 						rotatorResetTimeout = window.setTimeout(function() {
@@ -336,7 +336,7 @@
 	  						if(animateStop === false) {
 
 	  							goTo(locationObj);
-	  							window.setTimeout(function() {
+	  							timeout8 = window.setTimeout(function() {
 
 				  					pinSetup(locationObj);
 				  					map.flyTo({center: [-74.0077331198848, 40.72457651621153], zoom: 12.5, duration: 3000, pitch: 60, bearing: 15});
@@ -345,6 +345,7 @@
 
 				  				}, locationObj.duration + 3000);
 	  						}
+	  						timeoutsArray.push(timeout8);
 	  					});
 					}
 
