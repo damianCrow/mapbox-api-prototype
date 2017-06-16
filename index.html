@@ -35,27 +35,24 @@
 			<script>
 				mapboxgl.accessToken = 'pk.eyJ1IjoibXJhd2Vzb21lIiwiYSI6ImNqMzJzeDN4ZjAwMHAyd250YmRyZm04MDcifQ.YcsqDP3hqulR3f523AoB1g';
 
-				// var start = [-0.217833, 51.511892],
-				// end = [-0.088670, 51.513259],
-
-				var start = [-74.009476, 40.682402],
-				end = [-73.98562338336815, 40.73037341203556],
+				var start = [-0.217833, 51.511892],
+				end = [-0.088670, 51.513259],
 				markersArray = [], timeoutsArray = [], locationsArray = [],
 				isAtStart = true, animateStop = false,
 
-				centralPark11thStreetCathedralEnd = {center: [-73.9530315245757, 40.79865136720241], duration:5000, zoom:15, bearing: -150, text: 'Central Park, 11th Street Cathedral End', id: 'cp_cathedral'},
-				centralParkColumbusCircleEnd = {center: [-73.97810521248985, 40.76665163936005], duration:8000, bearing:65, pitch:100, zoom:15.5, text: 'Central Park, Columbus Circle End', id: 'cp_columbus'},
-				trumpTower = {center: [-73.97447413016186, 40.76323412185767], pitch: 25, bearing: -57, duration:6000, zoom:17, text: 'Trump Tower, Yes, He Has His Own Tower!', id:'trump_tower', boundries: [[-73.97386832165292, 40.762795049517166], [-73.97316570353738, 40.76248143866823], [-73.97353077998658, 40.76199663367237], [-73.97423647668262, 40.762303489374546], [-73.97386832165292, 40.762795049517166]]},
-				empireStateBuilding = {center: [-73.98629725365409, 40.75019114475904], bearing:15, duration:6000, pitch:45,  zoom:16, text: 'The Empire State Building', id:'empire'},
-				statueOfLiberty = {center: [-74.04408808271121, 40.689995838927985], bearing:130, duration:8000, pitch:80, zoom:17, text: 'The Statue Of Liberty', id:'liberty'},
-				raceTrack = {center: [-74.0121746510601, 40.68185787975443], pitch: 45, bearing: -17.6, duration:8000, zoom:16, text: 'Finally, The Track, Its Race Day', id:'race_track'},
+				tateModern = {center: [-0.09888205410763362, 51.507763394932056], duration:5000, zoom:15, bearing: -150, text: "The Tate, there's some beautiful art here", id: 'cp_cathedral'},
+				buckinghamPalace = {center: [-0.14244305655236644, 51.5008146674389], duration:8000, bearing:65, pitch:100, zoom:15.5, text: "The Queen's little detached cottage", id: 'cp_columbus'},
+				portobelloRoad = {center: [-0.20194451426925752, 51.51267724975435], pitch: 25, bearing: -57, duration:6000, zoom:17, text: "Portobello Road, rumor has it there is a cool market here", id:'trump_tower', boundries: [[-73.97386832165292, 40.762795049517166], [-73.97316570353738, 40.76248143866823], [-73.97353077998658, 40.76199663367237], [-73.97423647668262, 40.762303489374546], [-73.97386832165292, 40.762795049517166]]},
+				embassyCafe = {center: [-0.21644505735605435, 51.51031824668391], bearing:15, duration:6000, pitch:45,  zoom:16, text: "Embassy cafe! Not sure why, but Giulio requested it, and he's my boss", id:'empire'},
+				pigAndWhistle = {center: [-0.21759153731389347, 51.514102963196734], bearing:-17.6, duration:8000, pitch:45, zoom:17, text: 'Pig and Whistle. The "Jerk Chicken" leaves much to be desired!!', id:'liberty'},
+				theOffice = {center: [-0.2177598856553402, 51.512208058259205], pitch: 80, bearing: 130, duration:8000, zoom:16, text: 'Interstate HQ! This is where the magic happens baby', id:'race_track'},
 				buildingCover = [[-73.98298924526172, 40.757523684874144], [-73.98257129198404, 40.75730063091109], [-73.98279427026381, 40.75706271234105], [-73.9830146849198, 40.756979858365554], [-73.9831166057514, 40.75739603524059]];
 
-				locationsArray.push(centralPark11thStreetCathedralEnd, centralParkColumbusCircleEnd, trumpTower, empireStateBuilding, statueOfLiberty, raceTrack);
+				locationsArray.push(tateModern, buckinghamPalace, portobelloRoad, embassyCafe, pigAndWhistle, theOffice);
 
 				var bounds = [
-				    [-74.08633022449791, 40.67099989314178], // Southwest coordinates
-				    [-73.7202743886315, 40.893309881421345]  // Northeast coordinates
+				    [-0.5152859255479996, 51.28841529422982], // Southwest coordinates
+				    [1.2400252619251546, 52.145907171139896]  // Northeast coordinates
 				];
 
 				var line = [
@@ -66,50 +63,14 @@
 					[-0.0868314945714701, 51.51478507301533]
 				];
 
-				var newYorkTrack = [
-					[-74.01182624984088, 40.68022261512692],
-					[-74.00878754338186,40.68280491106182],
-					[-74.00873385643264, 40.68277985816269],
-					[-74.0087679933799, 40.682699326780636],
-					[-74.01185841790105, 40.680050815022526],
-					[-74.01177503408419, 40.679970418490825],
-					[-74.01177194224341, 40.67989566129785],
-					[-74.01181696965735, 40.6798689709228],
-					[-74.01188631056932, 40.67986610460744],
-					// [-74.01189023387401, 40.679883575948395],
-					[-74.01280379738782, 40.67992530905158],
-					[-74.01397213143746, 40.680697339703926],
-					[-74.01435672620136, 40.680989438069125],
-					[-74.01541885140128, 40.680311432328864],
-					[-74.01543809935839, 40.68030934166666],
-					[-74.01544805379933, 40.68032207734649],
-					[-74.01545646789987, 40.680358219699],
-					[-74.01420848749798, 40.68129442492221],
-					[-74.013939665909, 40.6810557371074],
-					[-74.01391841583748, 40.681011515408585],
-					[-74.01393432043604, 40.68098857368639],
-					[-74.01396138913998, 40.680985720099414],
-					[-74.01398950318354, 40.68098981517127],
-					[-74.01402538070985, 40.68096877118228],
-					[-74.0140261805388, 40.680899786107005],
-					[-74.0138992485375, 40.68075959482154],
-					[-74.01274786505157, 40.67999979426946],
-					[-74.01262529638282, 40.67998937007434],
-					[-74.01242057574775, 40.679993937187245],
-					[-74.0122769551286, 40.680021986340336],
-					[-74.01207471503095, 40.680082434595846],
-					[-74.01192300394621, 40.6801550796797],
-					[-74.01182624984088, 40.68022261512692]
-				];
-
 				var map = new mapboxgl.Map({
 					container: 'map',
-					center: centralPark11thStreetCathedralEnd.center,
+					center: start,
 					zoom: 11,
 					maxBounds: bounds,
 					pitch: 60,
     			bearing: 15, 
-					style: 'mapbox://styles/mrawesome/cj3lgw3ay000n2rpbc40jv6fj'/*'mapbox://styles/mapbox/outdoors-v9'*/
+					style: 'mapbox://styles/mrawesome/cj3zqegz42h4b2sry0ifcc4a5'
 				}).addControl(new mapboxgl.NavigationControl());
 
 				// map.on('mousemove', function (e) {
@@ -144,7 +105,7 @@
 			        'type': 'fill-extrusion',
 			        'minzoom': 4,
 			        'paint': {
-			            'fill-extrusion-color': '#002a3d',
+			            'fill-extrusion-color': '#f7f3e6',
 			            'fill-extrusion-height': {
 			                'type': 'identity',
 			                'property': 'height'
@@ -154,30 +115,6 @@
 			                'property': 'min_height'
 			            },
 			            'fill-extrusion-opacity': 0.75
-			        }
-			    });
-
-		    	map.addLayer({
-			        "id": "route",
-			        "type": "line",
-			        "source": {
-			            "type": "geojson",
-			            "data": {
-			                "type": "Feature",
-			                "properties": {},
-			                "geometry": {
-			                    "type": "LineString",
-			                    "coordinates": newYorkTrack
-			                }
-			            }
-			        },
-			        "layout": {
-			            "line-join": "round",
-			            "line-cap": "round"
-			        },
-			        "paint": {
-			            "line-color": "#13D4C8",
-			            "line-width": 6
 			        }
 			    });
 
@@ -241,55 +178,55 @@
 
 			    	var timeout1 = window.setTimeout(function() {
 
-						  goTo(centralPark11thStreetCathedralEnd);
+						  goTo(tateModern);
 						}, totalTimeout);
 
-			    	totalTimeout += centralPark11thStreetCathedralEnd.duration + 1000;
+			    	totalTimeout += tateModern.duration + 1000;
 
 						var timeout2 = window.setTimeout(function() {
 
-						  	pinSetup(centralPark11thStreetCathedralEnd);
-						   	goTo(centralParkColumbusCircleEnd);
+						  	pinSetup(tateModern);
+						   	goTo(buckinghamPalace);
 						}, totalTimeout);
 
-						totalTimeout += centralParkColumbusCircleEnd.duration + 500;
+						totalTimeout += buckinghamPalace.duration + 500;
 
 						var timeout3 = window.setTimeout(function() {
 
-				    	pinSetup(centralParkColumbusCircleEnd);
-				      goTo(trumpTower);
+				    	pinSetup(buckinghamPalace);
+				      goTo(portobelloRoad);
 				    }, totalTimeout);
 
-				    totalTimeout += trumpTower.duration + 1000;
+				    totalTimeout += portobelloRoad.duration + 1000;
 
 					  var timeout4 = window.setTimeout(function() {
 
-			      	pinSetup(trumpTower);
-				      goTo(empireStateBuilding);
+			      	pinSetup(portobelloRoad);
+				      goTo(embassyCafe);
 						}, totalTimeout);
 
-						totalTimeout += empireStateBuilding.duration + 1000;
+						totalTimeout += embassyCafe.duration + 1000;
 
 						var timeout5 = window.setTimeout(function() {
 			
-			      	pinSetup(empireStateBuilding);
-				      goTo(statueOfLiberty);
+			      	pinSetup(embassyCafe);
+				      goTo(pigAndWhistle);
 						}, totalTimeout);
 
-						totalTimeout += statueOfLiberty.duration + 500;
+						totalTimeout += pigAndWhistle.duration + 500;
 
 						var timeout6 = window.setTimeout(function() {
 
-			      	pinSetup(statueOfLiberty);
-				      goTo(raceTrack);
+			      	pinSetup(pigAndWhistle);
+				      goTo(theOffice);
 				    }, totalTimeout);
 
-						totalTimeout += raceTrack.duration + 2000;
+						totalTimeout += theOffice.duration + 2000;
 
   					var timeout7 = window.setTimeout(function() {
 
-							pinSetup(raceTrack);
-	  					map.flyTo({center: [-74.0077331198848, 40.72457651621153], zoom: 12.5, duration: 3000, pitch: 60, bearing: 15}); // ZOOM OUT AND CENTER MAP AFTER ANIMATION. \\
+							pinSetup(theOffice);
+	  					map.flyTo({center: start, zoom: 12.5, duration: 3000, pitch: 60, bearing: 15}); // ZOOM OUT AND CENTER MAP AFTER ANIMATION. \\
 	  				}, totalTimeout);
 
 	  				totalTimeout += 10000;
@@ -339,7 +276,7 @@
 	  							timeout8 = window.setTimeout(function() {
 
 				  					pinSetup(locationObj);
-				  					map.flyTo({center: [-74.0077331198848, 40.72457651621153], zoom: 12.5, duration: 3000, pitch: 60, bearing: 15});
+				  					map.flyTo({center: start, zoom: 12.5, duration: 3000, pitch: 60, bearing: 15});
 
 				  					rotatorReset(10000, rotator);
 
